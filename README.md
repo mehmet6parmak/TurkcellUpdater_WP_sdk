@@ -135,7 +135,7 @@ Root element of files should conform to <a href="#configurationRoot">Configurati
 Documents may contain additional keys but Updater library ignores any other key that is not referred in this document.
 
 
-    <!-- configurationRoot -->
+<!-- configurationRoot -->
 <div id="configurationRoot" class="entry">
 <h3>Configuration Root</h3>
 Root object that contains all data needed by Updater Library to show update messages and other notifications to user.
@@ -144,44 +144,44 @@ Type: Object
 
 <table>
 <tr>
-<th>Property name</th>
-<th>Type</th>
-<th>Default value</th>
-<th>Platforms</th>
-<th>Description</th>
-<th>Required</th>
-<th>Since</th>
+	<th>Property name</th>
+	<th>Type</th>
+	<th>Default value</th>
+	<th>Platforms</th>
+	<th>Description</th>
+	<th>Required</th>
+	<th>Since</th>
 </tr>
 
 <tr>
-<td>packageName</td>
-<td>String</td>
-<td>null</td>
-<td>All</td>
-<td>Platform specific unique identifier of application which configuration is created for. Package Id for Windows Phone applications.</td>
-<td>Yes</td>
-<td>1</td>
+	<td>packageName</td>
+	<td>String</td>
+	<td>null</td>
+	<td>All</td>
+	<td>Platform specific unique identifier of application which configuration is created for. Package Id for Windows Phone applications.</td>
+	<td>Yes</td>
+	<td>1</td>
 </tr>
 
 <tr>
-<td>updates</td>
-                <td>Array</td>
-                <td>null</td>
-                <td>All</td>
-                <td>List of update entries with 0 or more elements. See <a href="#updateEntry">Update Entry</a></td>
-                <td>No</td>
-                <td>1</td>
-            </tr>
+	<td>updates</td>
+	<td>Array</td>
+	<td>null</td>
+	<td>All</td>
+	<td>List of update entries with 0 or more elements. See <a href="#updateEntry">Update Entry</a></td>
+	<td>No</td>
+	<td>1</td>
+</tr>
 
 <tr>
-                <td>messages</td>
-                <td>Array</td>
-                <td>null</td>
-                <td>All</td>
-                <td>List of messages with 0 or more elements. See <a href="#messageEntry">Message Entry</a></td>
-                <td>No</td>
-                <td>2</td>
-            </tr>
+        <td>messages</td>
+        <td>Array</td>
+        <td>null</td>
+        <td>All</td>
+        <td>List of messages with 0 or more elements. See <a href="#messageEntry">Message Entry</a></td>
+        <td>No</td>
+        <td>2</td>
+</tr>
 
 </table>
 
@@ -223,7 +223,7 @@ Type: Object
 
 </div>
 
-    <!-- updateEntry -->
+<!-- updateEntry -->
 <div id="updateEntry">
         <h3>Update Entry</h3>
         Provides information about how update should be installed and when update should be applied.
@@ -375,7 +375,7 @@ If empty strings (&quot;&quot;) or asterisk(&quot;*&quot;) is used as key, it ma
 
 
 
-    <!-- messageEntry -->
+<!-- messageEntry -->
 <div id="messageEntry" class="entry">
 <h3>Message Entry</h3>
 Defines a message to display to user when message should be displayed.
@@ -524,7 +524,7 @@ If empty strings (&quot;&quot;) or asterisk(&quot;*&quot;) is used as key, it ma
 
 </div>
 
-    <!-- filterEntry -->
+<!-- filterEntry -->
 <div id="filterEntry" class="entry">
 <h3>Filter Entry</h3>
 <a href="#messageEntry">Message Entries</a> and <a href="#updateEntry">Update Entries</a> are applied only
@@ -740,7 +740,7 @@ Type: Object
 
 </div>
 
-    <!-- updateDescriptionEntry -->
+<!-- updateDescriptionEntry -->
 <div id="updateDescriptionEntry" class="entry">
 <h3>Update Description Entry</h3>
 Contains language specific texts that are displayed to user on updates found dialog.
