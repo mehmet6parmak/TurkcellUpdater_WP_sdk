@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Turkcell.Updater</id>
+    <version>1.0.0</version>
+    <title>Turkcell Updater for Windows Phone</title>
+    <authors>Turkcell İletişim Hizmetleri A.Ş.</authors>
+    <iconUrl>https://dl.dropboxusercontent.com/u/207319019/turkcell_32x32.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Turkcell Updater for Windows Phone is developed to help developers easily handle new versions of their apps. Easily show new version Popups in ForceUpdate, ForceExit and Optional categories or you can show Messages to users by defining them in a remote Turkcell Updater configuration file.</description>
+    <summary>Turkcell Updater for Windows Phone is developed to help developers easily handle new versions of their apps. Easily show new version Popups in ForceUpdate, ForceExit and Optional categories.</summary>
+    <copyright>© 2013 Turkcell</copyright>
+    <language>en-US</language>
+    <tags>Turkcell Updater, Update Configuration</tags>
+    <dependencies>
+      <group targetFramework="WindowsPhone8.0">
+        <dependency id="Microsoft.Net.Http" version="2.2.18" />
+      </group>
+    </dependencies>
+
+  </metadata>
+  <files>
+    <file src="Turkcell.Updater/Turkcell.Updater.dll" target="lib\wp8\Turkcell.Updater.dll" />
+    <file src="Turkcell.Updater/Turkcell.Updater.xml" target="lib\wp8\Turkcell.Updater.xml" />
+
+    <file src="Turkcell.Updater/Turkcell.Updater.Content\Images\bg-btn-blue-active.png" target="content\Turkcell.Updater.Content\Images\bg-btn-blue-active.png" />
+    <file src="Turkcell.Updater/Turkcell.Updater.Content\Images\bg-btn-blue-passive.png" target="content\Turkcell.Updater.Content\Images\bg-btn-blue-passive.png" />
+    <file src="Turkcell.Updater/Turkcell.Updater.Content\Images\updater_warning.png" target="content\Turkcell.Updater.Content\Images\updater_warning.png" />
+  </files>
+</package>
