@@ -22,7 +22,7 @@ namespace Turkcell.Updater.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class UpdaterResources {
+    public class UpdaterResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Turkcell.Updater.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Turkcell.Updater.Resources.UpdaterResources", typeof(UpdaterResources).Assembly);
@@ -51,7 +51,7 @@ namespace Turkcell.Updater.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Turkcell.Updater.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Kapat.
         /// </summary>
-        internal static string close {
+        public static string close {
             get {
                 return ResourceManager.GetString("close", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Turkcell.Updater.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Devam et.
         /// </summary>
-        internal static string continue_ {
+        public static string continue_ {
             get {
                 return ResourceManager.GetString("continue_", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Turkcell.Updater.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Hata oluştu.
         /// </summary>
-        internal static string error_occured {
+        public static string error_occured {
             get {
                 return ResourceManager.GetString("error_occured", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Turkcell.Updater.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Uygulamadan çık.
         /// </summary>
-        internal static string exit_application {
+        public static string exit_application {
             get {
                 return ResourceManager.GetString("exit_application", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Turkcell.Updater.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Kur.
         /// </summary>
-        internal static string install {
+        public static string install {
             get {
                 return ResourceManager.GetString("install", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Turkcell.Updater.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Çalıştır.
         /// </summary>
-        internal static string launch {
+        public static string launch {
             get {
                 return ResourceManager.GetString("launch", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Turkcell.Updater.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Sonra hatırlat.
         /// </summary>
-        internal static string remind_me_later {
+        public static string remind_me_later {
             get {
                 return ResourceManager.GetString("remind_me_later", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Turkcell.Updater.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Hizmet kullanılamıyor.
         /// </summary>
-        internal static string service_is_not_available {
+        public static string service_is_not_available {
             get {
                 return ResourceManager.GetString("service_is_not_available", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Turkcell.Updater.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Güncelleme bulundu.
         /// </summary>
-        internal static string update_found {
+        public static string update_found {
             get {
                 return ResourceManager.GetString("update_found", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Turkcell.Updater.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Güncelleme gerekli.
         /// </summary>
-        internal static string update_required {
+        public static string update_required {
             get {
                 return ResourceManager.GetString("update_required", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace Turkcell.Updater.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Görüntüle.
         /// </summary>
-        internal static string view {
+        public static string view {
             get {
                 return ResourceManager.GetString("view", resourceCulture);
             }

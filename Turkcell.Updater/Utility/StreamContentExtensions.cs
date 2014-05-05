@@ -21,7 +21,5 @@ namespace Turkcell.Updater.Utility
             }
             return result;
         }
-
-
     }
 }

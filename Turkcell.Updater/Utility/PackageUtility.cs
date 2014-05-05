@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Windows.ApplicationModel;
 using Windows.Phone.Management.Deployment;
@@ -12,15 +13,18 @@ namespace Turkcell.Updater.Utility
             if (String.IsNullOrEmpty(packageId))
                 return false;
 
-            var packages = InstallationManager.FindPackagesForCurrentPublisher();
+            IEnumerable<Package> packages = InstallationManager.FindPackagesForCurrentPublisher();
             Package package = null;
             if (targetVersion == null)
-                package = packages.SingleOrDefault(p => p.Id.ProductId.Equals(packageId, StringComparison.InvariantCultureIgnoreCase));
+                package =
+                    packages.SingleOrDefault(
+                        p => p.Id.ProductId.Equals(packageId, StringComparison.InvariantCultureIgnoreCase));
             else
-               package = packages.SingleOrDefault(p => p.Id.ProductId.Equals(packageId, StringComparison.InvariantCultureIgnoreCase) 
-                    && p.Id.Version.Major == targetVersion.Major && p.Id.Version.Minor == targetVersion.Minor);
+                package =
+                    packages.SingleOrDefault(
+                        p => p.Id.ProductId.Equals(packageId, StringComparison.InvariantCultureIgnoreCase)
+                             && p.Id.Version.Major == targetVersion.Major && p.Id.Version.Minor == targetVersion.Minor);
             return package != null;
         }
-
     }
 }

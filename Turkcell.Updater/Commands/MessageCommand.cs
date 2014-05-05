@@ -6,9 +6,8 @@ namespace Turkcell.Updater.Commands
     internal class MessageCommand : ICommand
     {
         private readonly Action _executeAction;
-        
+
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="executeAction"></param>
         public MessageCommand(Action executeAction)
@@ -21,7 +20,7 @@ namespace Turkcell.Updater.Commands
         {
             return true;
         }
-        
+
         public event EventHandler CanExecuteChanged;
 
         public void Execute(object parameter)

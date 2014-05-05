@@ -44,6 +44,5 @@ namespace Turkcell.Updater.Utility
                 Write(e.StackTrace);
             }
         }
-
     }
 }

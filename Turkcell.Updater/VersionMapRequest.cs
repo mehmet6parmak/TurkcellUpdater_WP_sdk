@@ -11,10 +11,6 @@ namespace Turkcell.Updater
 {
     internal class VersionMapRequest : HttpRequestMessage
     {
-        public Properties CurrentProperties { get; private set; }
-        public bool PostProperties { get; private set; }
-        public HttpResponseMessage Response { get; set; }
-
         public VersionMapRequest(Uri versionServerUri, Properties currentProperties, bool postProperties)
         {
             RequestUri = versionServerUri;
@@ -25,18 +21,22 @@ namespace Turkcell.Updater
             {
                 throw new NotImplementedException();
                 Method = HttpMethod.Post;
-                var json = currentProperties.ToJson();
+                string json = currentProperties.ToJson();
                 Content = new StringContent(json, Encoding.UTF8);
             }
             else
             {
-                Method = HttpMethod.Get;                
+                Method = HttpMethod.Get;
             }
         }
 
+        public Properties CurrentProperties { get; private set; }
+        public bool PostProperties { get; private set; }
+        public HttpResponseMessage Response { get; set; }
+
         public async Task<TurkcellUpdaterResponse> ToResponseAsync()
         {
-            var response = Response;
+            HttpResponseMessage response = Response;
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 string content = string.Empty;
@@ -46,7 +46,7 @@ namespace Turkcell.Updater
                     //Note: Configurations files has to be UTF-8 encoded.
                     content = await streamContent.ReadTextAsync();
                 }
-                var jsonData = JsonMapper.ToObject(content);
+                JsonData jsonData = JsonMapper.ToObject(content);
                 var result = new TurkcellUpdaterResponse(response.StatusCode);
                 return FillResponseWithData(result, jsonData);
             }
@@ -69,7 +69,7 @@ namespace Turkcell.Updater
                     if (VersionsMap.IsVersionMapOfPackageId(packageName, jsonData))
                     {
                         var map = new VersionsMap(jsonData);
-                        var update = map.GetUpdate(CurrentProperties);
+                        Update update = map.GetUpdate(CurrentProperties);
                         if (update != null)
                         {
                             Log.I("Update found: " + update);
@@ -78,7 +78,7 @@ namespace Turkcell.Updater
                         else
                         {
                             var records = new MessageDisplayRecords();
-                            var message = map.GetMessage(CurrentProperties, records);
+                            Message message = map.GetMessage(CurrentProperties, records);
                             if (message == null)
                             {
                                 Log.I("No update or message found.");

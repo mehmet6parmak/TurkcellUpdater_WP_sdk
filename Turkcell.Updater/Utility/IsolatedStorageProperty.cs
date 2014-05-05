@@ -1,8 +1,8 @@
 ﻿namespace Turkcell.Updater.Utility
 {
     /// <summary>
-    /// This is wrapper class for storing one setting
-    /// Object of this type must be single
+    ///     This is wrapper class for storing one setting
+    ///     Object of this type must be single
     /// </summary>
     /// <typeparam name="T">Any serializable type</typeparam>
     public class IsolatedStorageProperty<T>
@@ -18,7 +18,7 @@
         }
 
         /// <summary>
-        /// Determines if setting exists in the storage
+        ///     Determines if setting exists in the storage
         /// </summary>
         public bool Exists
         {
@@ -26,7 +26,7 @@
         }
 
         /// <summary>
-        /// Use this property to access the actual setting value
+        ///     Use this property to access the actual setting value
         /// </summary>
         public T Value
         {
@@ -42,7 +42,7 @@
                     }
                 }
 
-                return (T)IsolatedStoragePropertyHelper.Store[_name];
+                return (T) IsolatedStoragePropertyHelper.Store[_name];
             }
             set
             {
@@ -61,7 +61,7 @@
 
         public void SetDefault()
         {
-            Value = (T)_defaultValue;
+            Value = (T) _defaultValue;
         }
     }
 }

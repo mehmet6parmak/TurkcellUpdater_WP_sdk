@@ -1,5 +1,5 @@
-﻿using Microsoft.Phone.Net.NetworkInformation;
-using System;
+﻿using System;
+using Microsoft.Phone.Net.NetworkInformation;
 
 namespace Turkcell.Updater.Utility
 {
@@ -17,21 +17,21 @@ namespace Turkcell.Updater.Utility
         {
             if (!String.IsNullOrEmpty(DeviceNetworkInformation.CellularMobileOperator))
             {
-                var operatorName = DeviceNetworkInformation.CellularMobileOperator.ToLowerInvariant();
+                string operatorName = DeviceNetworkInformation.CellularMobileOperator.ToLowerInvariant();
 
                 if (operatorName.Contains(Avea))
                 {
                     //learn whether it can be 04 or not, aycell was 04, how can i differentiate 03 and 04
                     //It can be whether 03 or 04 but we try to identify the operator here, 03 or 04 is not important for us. 
-                    return new OperatorInfo { MobileNetworkCode = "03" };                    
+                    return new OperatorInfo {MobileNetworkCode = "03"};
                 }
                 if (operatorName.Contains(VodafoneLong) || operatorName.Contains(VodafoneShort))
                 {
-                    return new OperatorInfo { MobileNetworkCode = "02" };
+                    return new OperatorInfo {MobileNetworkCode = "02"};
                 }
                 if (operatorName.Contains(TurkcellLong) || operatorName.Contains(TurkcellShort))
                 {
-                    return new OperatorInfo { MobileNetworkCode = "01" };
+                    return new OperatorInfo {MobileNetworkCode = "01"};
                 }
             }
             return null;

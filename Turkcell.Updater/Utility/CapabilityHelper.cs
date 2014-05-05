@@ -30,7 +30,7 @@ namespace Turkcell.Updater.Utility
                 XElement xml = XElement.Load(strm);
                 IEnumerable<XElement> capabilities = xml.Descendants(Capabilities).Elements();
 
-                var xElements = capabilities as XElement[] ?? capabilities.ToArray();
+                XElement[] xElements = capabilities as XElement[] ?? capabilities.ToArray();
                 IsNetworkingCapability = CheckCapability(xElements, IdCapNetworking);
                 IsDeviceIdentityCapability = CheckCapability(xElements, IdCapIdentityDevice);
                 IsUserIdentityCapability = CheckCapability(xElements, IdCapIdentityUser);
@@ -61,7 +61,7 @@ namespace Turkcell.Updater.Utility
         {
             XElement capability = capabilities.FirstOrDefault(n =>
                 {
-                    var xAttribute = n.Attribute(Name);
+                    XAttribute xAttribute = n.Attribute(Name);
                     return xAttribute != null && xAttribute.Value.Equals(capabilityName);
                 });
             return capability != null;

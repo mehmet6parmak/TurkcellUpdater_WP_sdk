@@ -8,18 +8,19 @@ namespace Turkcell.Updater
 {
     internal class UpdateEntry : FilteredEntry
     {
-        private readonly String _targetPackageId;
-        private readonly Version _targetVersionCode;
+        internal readonly List<UpdateDescription> UpdateDescriptions;
         private readonly bool _forceExit;
         private readonly bool _forceUpdate;
-        private readonly bool _targetMarketplace;
         private readonly Uri _targetAppUriSchema;
+        private readonly bool _targetMarketplace;
+        private readonly String _targetPackageId;
+        private readonly Version _targetVersionCode;
         private readonly Uri _targetWebsiteUri;
-        internal readonly List<UpdateDescription> UpdateDescriptions;
 
         internal UpdateEntry(List<Filter> filters,
                              List<UpdateDescription> updateDescriptions, Version targetVersionCode,
-                             String targetPackageName, Uri targetAppUriSchema, bool targetMarketplace, bool forceUpdate, bool forceExit)
+                             String targetPackageName, Uri targetAppUriSchema, bool targetMarketplace, bool forceUpdate,
+                             bool forceExit)
             : base(filters)
         {
             UpdateDescriptions = updateDescriptions;
@@ -42,13 +43,13 @@ namespace Turkcell.Updater
             _targetMarketplace = jsonObject.OptBoolean("targetGooglePlay");
 
 
-            var targetSchema = jsonObject.OptString("targetUriSchema");
+            string targetSchema = jsonObject.OptString("targetUriSchema");
             if (!String.IsNullOrEmpty(targetSchema) && Uri.IsWellFormedUriString(targetSchema, UriKind.Absolute))
             {
                 _targetAppUriSchema = new Uri(targetSchema);
             }
 
-            var targetWebSite = jsonObject.OptString("targetWebsiteUrl");
+            string targetWebSite = jsonObject.OptString("targetWebsiteUrl");
             if (!String.IsNullOrEmpty(targetWebSite) && Uri.IsWellFormedUriString(targetWebSite, UriKind.Absolute))
             {
                 _targetWebsiteUri = new Uri(targetWebSite);
@@ -99,7 +100,7 @@ namespace Turkcell.Updater
             }
 
             String packageName = _targetPackageId;
-            if (String.IsNullOrEmpty(packageName) && properties != null 
+            if (String.IsNullOrEmpty(packageName) && properties != null
                 && _targetAppUriSchema == null
                 && _targetWebsiteUri == null)
             {
@@ -113,7 +114,8 @@ namespace Turkcell.Updater
             //}
 
             UpdateDescription updateDescription = LocalizedStringMap.Select(UpdateDescriptions, languageCode);
-            return new Update(updateDescription, _targetMarketplace, _targetVersionCode, _targetAppUriSchema, _targetWebsiteUri,
+            return new Update(updateDescription, _targetMarketplace, _targetVersionCode, _targetAppUriSchema,
+                              _targetWebsiteUri,
                               packageName, _forceUpdate, _forceExit);
         }
 
@@ -121,7 +123,7 @@ namespace Turkcell.Updater
         {
             if (IsMatches(properties))
             {
-                var currentVersion = Version.Parse(properties[Properties.KeyAppVersion]);
+                Version currentVersion = Version.Parse(properties[Properties.KeyAppVersion]);
                 if (currentVersion != null && _targetVersionCode != currentVersion)
                 {
                     return true;
@@ -135,6 +137,5 @@ namespace Turkcell.Updater
 
             return false;
         }
-
     }
 }

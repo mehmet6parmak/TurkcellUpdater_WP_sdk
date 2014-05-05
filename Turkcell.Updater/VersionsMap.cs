@@ -8,9 +8,9 @@ namespace Turkcell.Updater
 {
     internal class VersionsMap
     {
-        readonly String _packageName;
-        private readonly List<UpdateEntry> _updateEntries;
         private readonly List<MessageEntry> _messageEntries;
+        private readonly String _packageName;
+        private readonly List<UpdateEntry> _updateEntries;
 
         internal VersionsMap(String packageName, List<UpdateEntry> updateEntries, List<MessageEntry> messageEntries)
         {
@@ -143,7 +143,6 @@ namespace Turkcell.Updater
                 {
                     Log.E("Error occured while searching message entry to display", e);
                 }
-
             }
             return null;
         }
@@ -153,9 +152,8 @@ namespace Turkcell.Updater
             if (string.IsNullOrEmpty(_packageName))
             {
                 throw new UpdaterException(
-                        "'packageName' shoud not be a null or empty.");
+                    "'packageName' shoud not be a null or empty.");
             }
         }
     }
-
 }

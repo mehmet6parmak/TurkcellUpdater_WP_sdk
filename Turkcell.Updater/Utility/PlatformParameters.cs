@@ -1,19 +1,33 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Devices;
 using Microsoft.Phone.Info;
-using System.Globalization;
-using System.Diagnostics;
+using Environment = Microsoft.Devices.Environment;
 
 namespace Turkcell.Updater.Utility
 {
     internal class PlatformParameters
     {
+        private const string AppInstallationIdFilename = ".updaterSdkInstallationId";
         public bool IsTestModeEnabled { get; protected set; }
         public string DeviceBrand { get; protected set; }
         public string DeviceModel { get; protected set; }
         public string DeviceId { get; protected set; }
+
+        public string DeviceMcc { get; protected set; }
+        public string DeviceMnc { get; protected set; }
+        public string AppId { get; protected set; }
+        public string PublisherId { get; protected set; }
+        public string DeviceOsName { get; protected set; }
+        public string DeviceOsVersion { get; protected set; }
+        public int? DeviceScreenWidth { get; protected set; }
+        public int? DeviceScreenHeight { get; protected set; }
+        public string AppVersion { get; protected set; }
+        public string AppInstallationId { get; protected set; }
+        public string DeviceLanguage { get; protected set; }
 
         private static string GetDeviceId()
         {
@@ -36,29 +50,16 @@ namespace Turkcell.Updater.Utility
             return deviceId;
         }
 
-        public string DeviceMcc { get; protected set; }
-        public string DeviceMnc { get; protected set; }
-        public string AppId { get; protected set; }
-        public string PublisherId { get; protected set; }
-        public string DeviceOsName { get; protected set; }
-        public string DeviceOsVersion { get; protected set; }
-        public int? DeviceScreenWidth { get; protected set; }
-        public int? DeviceScreenHeight { get; protected set; }
-        public string AppVersion { get; protected set; }
-        public string AppInstallationId { get; protected set; }
-        public string DeviceLanguage { get; protected set; }
-
-        public async Task Retrieve()
+        internal async Task Retrieve()
         {
-            await Task.Run(async () =>
+            await Task.Run(() =>
                 {
                     try
                     {
-
 #if DEBUG
-                        IsTestModeEnabled = true;
+                    IsTestModeEnabled = true;
 #endif
-                        if (Microsoft.Devices.Environment.DeviceType == DeviceType.Emulator)
+                        if (Environment.DeviceType == DeviceType.Emulator)
                         {
                             IsTestModeEnabled = true;
                         }
@@ -66,7 +67,7 @@ namespace Turkcell.Updater.Utility
                         DeviceBrand = DeviceStatus.DeviceManufacturer;
                         DeviceModel = DeviceStatus.DeviceName;
 
-                        var operatorInfo = OperatorInfoHelper.GetOperatorInfo();
+                        OperatorInfo operatorInfo = OperatorInfoHelper.GetOperatorInfo();
                         if (operatorInfo != null)
                         {
                             DeviceMcc = operatorInfo.MobileCountryCode;
@@ -78,32 +79,30 @@ namespace Turkcell.Updater.Utility
                         DeviceOsName = "WP";
                         DeviceOsVersion = System.Environment.OSVersion.Version.ToString();
 
-                        DeviceLanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-                        AppVersion = WmAppManifestHelper.GetAppVersion();
+
                         DeviceId = GetDeviceId();
 
-                        AppInstallationId = await ReadAppInstallationId();
-
-
-                        //throws invalid cross thread access exception in unit tests.
-                        DeviceScreenWidth =
-                            (int)
-                            (Math.Ceiling(Application.Current.Host.Content.ScaleFactor / 100.0 *
-                                          Application.Current.Host.Content.ActualWidth));
-                        DeviceScreenHeight =
-                            (int)
-                            (Math.Ceiling(Application.Current.Host.Content.ScaleFactor / 100.0 *
-                                          Application.Current.Host.Content.ActualHeight));
-
+                        Task<string> installationIdTask = ReadAppInstallationId();
+                        installationIdTask.Wait();
+                        AppInstallationId = installationIdTask.Result;
+                        DeviceLanguage = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+                        AppVersion = WmAppManifestHelper.GetAppVersion();
                     }
                     catch (Exception err)
                     {
                         Debug.WriteLine(err.Message + System.Environment.NewLine + err.StackTrace);
                     }
                 });
+            DeviceScreenWidth =
+                (int)
+                (Math.Ceiling(Application.Current.Host.Content.ScaleFactor/100.0*
+                              Application.Current.Host.Content.ActualWidth));
+            DeviceScreenHeight =
+                (int)
+                (Math.Ceiling(Application.Current.Host.Content.ScaleFactor/100.0*
+                              Application.Current.Host.Content.ActualHeight));
         }
 
-        private const string AppInstallationIdFilename = ".updaterSdkInstallationId";
         private async Task<string> ReadAppInstallationId()
         {
             string id = String.Empty;

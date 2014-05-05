@@ -13,7 +13,7 @@ namespace Turkcell.Updater.Utility
 
         public static string BuildApplicationDeepLink()
         {
-            var applicationId = Guid.Parse(GetManifestAttributeValue(AppProductIdAttributeName));
+            Guid applicationId = Guid.Parse(GetManifestAttributeValue(AppProductIdAttributeName));
 
             return BuildApplicationDeepLink(applicationId.ToString());
         }
@@ -41,11 +41,11 @@ namespace Turkcell.Updater.Utility
         public static string GetManifestAttributeValue(string attributeName)
         {
             var xmlReaderSettings = new XmlReaderSettings
-            {
-                XmlResolver = new XmlXapResolver()
-            };
+                {
+                    XmlResolver = new XmlXapResolver()
+                };
 
-            using (var xmlReader = XmlReader.Create(AppManifestName, xmlReaderSettings))
+            using (XmlReader xmlReader = XmlReader.Create(AppManifestName, xmlReaderSettings))
             {
                 xmlReader.ReadToDescendant(AppNodeName);
 

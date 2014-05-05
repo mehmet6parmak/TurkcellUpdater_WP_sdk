@@ -30,7 +30,7 @@ namespace Turkcell.Updater.Commands
             else
             {
                 _manager.FireOnCompleted();
-            }           
+            }
         }
     }
 }

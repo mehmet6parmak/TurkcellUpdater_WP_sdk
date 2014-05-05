@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Reflection;
 using Microsoft.Devices;
+using Environment = Microsoft.Devices.Environment;
 
 namespace Turkcell.Updater
 {
     /// <summary>
-    /// Contains some metadata about the library
+    ///     Contains some metadata about the library
     /// </summary>
     public static class Configuration
     {
         internal const int Level = 1;
 
         /// <summary>
-        /// 
         /// </summary>
         public static string ProductName;
+
         /// <summary>
-        /// 
         /// </summary>
         public static Version ProductVersion;
 
@@ -25,11 +25,11 @@ namespace Turkcell.Updater
 #else
         internal static bool Debug = false;
 #endif
-	
+
         /// <summary>
-        /// Setting this value to <strong>null</strong> disables MIME type checking for JSON files.
+        ///     Setting this value to <strong>null</strong> disables MIME type checking for JSON files.
         /// </summary>
-	    internal static String ExpectedJsonMimeType = Debug ? null : "application/json";
+        internal static String ExpectedJsonMimeType = Debug ? null : "application/json";
 
         static Configuration()
         {
@@ -38,8 +38,8 @@ namespace Turkcell.Updater
             ProductName = currentAssembly.Name;
             ProductVersion = currentAssembly.Version;
 
-            if(!Debug)
-                Debug = Microsoft.Devices.Environment.DeviceType == DeviceType.Emulator;
+            if (!Debug)
+                Debug = Environment.DeviceType == DeviceType.Emulator;
         }
 
         internal static void FetchAssemblyInfo()
@@ -50,7 +50,7 @@ namespace Turkcell.Updater
             ProductVersion = currentAssembly.Version;
 
             if (!Debug)
-                Debug = Microsoft.Devices.Environment.DeviceType == DeviceType.Emulator;
+                Debug = Environment.DeviceType == DeviceType.Emulator;
         }
     }
 }

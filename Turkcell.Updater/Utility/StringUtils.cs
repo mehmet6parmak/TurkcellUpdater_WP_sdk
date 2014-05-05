@@ -6,7 +6,6 @@ namespace Turkcell.Updater.Utility
 {
     internal static class StringUtils
     {
-
         public static string Normalize(string input)
         {
             if (input == null)
@@ -40,6 +39,5 @@ namespace Turkcell.Updater.Utility
             }
             return sb.ToString();
         }
-
     }
 }

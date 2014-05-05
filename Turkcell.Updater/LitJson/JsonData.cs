@@ -1,4 +1,5 @@
 #region Header
+
 /**
  * JsonData.cs
  *   Generic type to hold JSON data (objects, arrays, and so on). This is
@@ -7,20 +8,20 @@
  * The authors disclaim copyright to this source code. For more details, see
  * the COPYING file included with this distribution.
  **/
-#endregion
 
+#endregion
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-
 namespace LitJson
 {
     internal class JsonData : IJsonWrapper, IEquatable<JsonData>
     {
         #region Fields
+
         private IList<JsonData> inst_array;
         private bool inst_boolean;
         private double inst_double;
@@ -29,14 +30,15 @@ namespace LitJson
         private IDictionary<string, JsonData> inst_object;
         private string inst_string;
         private string json;
-        private JsonType type;
 
         // Used to implement the IOrderedDictionary interface
         private IList<KeyValuePair<string, JsonData>> object_list;
+        private JsonType type;
+
         #endregion
 
-
         #region Properties
+
         public int Count
         {
             get { return EnsureCollection().Count; }
@@ -79,53 +81,44 @@ namespace LitJson
 
         public ICollection<string> Keys
         {
-            get { EnsureDictionary(); return inst_object.Keys; }
-        }
-        #endregion
-
-
-        #region ICollection Properties
-        int ICollection.Count
-        {
             get
             {
-                return Count;
+                EnsureDictionary();
+                return inst_object.Keys;
             }
+        }
+
+        #endregion
+
+        #region ICollection Properties
+
+        int ICollection.Count
+        {
+            get { return Count; }
         }
 
         bool ICollection.IsSynchronized
         {
-            get
-            {
-                return EnsureCollection().IsSynchronized;
-            }
+            get { return EnsureCollection().IsSynchronized; }
         }
 
         object ICollection.SyncRoot
         {
-            get
-            {
-                return EnsureCollection().SyncRoot;
-            }
+            get { return EnsureCollection().SyncRoot; }
         }
+
         #endregion
 
-
         #region IDictionary Properties
+
         bool IDictionary.IsFixedSize
         {
-            get
-            {
-                return EnsureDictionary().IsFixedSize;
-            }
+            get { return EnsureDictionary().IsFixedSize; }
         }
 
         bool IDictionary.IsReadOnly
         {
-            get
-            {
-                return EnsureDictionary().IsReadOnly;
-            }
+            get { return EnsureDictionary().IsReadOnly; }
         }
 
         ICollection IDictionary.Keys
@@ -135,13 +128,13 @@ namespace LitJson
                 EnsureDictionary();
                 IList<string> keys = new List<string>();
 
-                foreach (KeyValuePair<string, JsonData> entry in
-                         object_list)
+                foreach (var entry in
+                    object_list)
                 {
                     keys.Add(entry.Key);
                 }
 
-                return (ICollection)keys;
+                return (ICollection) keys;
             }
         }
 
@@ -152,20 +145,20 @@ namespace LitJson
                 EnsureDictionary();
                 IList<JsonData> values = new List<JsonData>();
 
-                foreach (KeyValuePair<string, JsonData> entry in
-                         object_list)
+                foreach (var entry in
+                    object_list)
                 {
                     values.Add(entry.Value);
                 }
 
-                return (ICollection)values;
+                return (ICollection) values;
             }
         }
+
         #endregion
 
-
-
         #region IJsonWrapper Properties
+
         bool IJsonWrapper.IsArray
         {
             get { return IsArray; }
@@ -200,35 +193,28 @@ namespace LitJson
         {
             get { return IsString; }
         }
+
         #endregion
 
-
         #region IList Properties
+
         bool IList.IsFixedSize
         {
-            get
-            {
-                return EnsureList().IsFixedSize;
-            }
+            get { return EnsureList().IsFixedSize; }
         }
 
         bool IList.IsReadOnly
         {
-            get
-            {
-                return EnsureList().IsReadOnly;
-            }
+            get { return EnsureList().IsReadOnly; }
         }
+
         #endregion
 
-
         #region IDictionary Indexer
+
         object IDictionary.this[object key]
         {
-            get
-            {
-                return EnsureDictionary()[key];
-            }
+            get { return EnsureDictionary()[key]; }
 
             set
             {
@@ -238,13 +224,14 @@ namespace LitJson
 
                 JsonData data = ToJsonData(value);
 
-                this[(string)key] = data;
+                this[(string) key] = data;
             }
         }
+
         #endregion
 
-
         #region IOrderedDictionary Indexer
+
         object IOrderedDictionary.this[int idx]
         {
             get
@@ -262,22 +249,20 @@ namespace LitJson
 
                 inst_object[old_entry.Key] = data;
 
-                KeyValuePair<string, JsonData> entry =
+                var entry =
                     new KeyValuePair<string, JsonData>(old_entry.Key, data);
 
                 object_list[idx] = entry;
             }
         }
+
         #endregion
 
-
         #region IList Indexer
+
         object IList.this[int index]
         {
-            get
-            {
-                return EnsureList()[index];
-            }
+            get { return EnsureList()[index]; }
 
             set
             {
@@ -287,10 +272,11 @@ namespace LitJson
                 this[index] = data;
             }
         }
+
         #endregion
 
-
         #region Public Indexers
+
         public JsonData this[string prop_name]
         {
             get
@@ -303,7 +289,7 @@ namespace LitJson
             {
                 EnsureDictionary();
 
-                KeyValuePair<string, JsonData> entry =
+                var entry =
                     new KeyValuePair<string, JsonData>(prop_name, value);
 
                 if (inst_object.ContainsKey(prop_name))
@@ -347,7 +333,7 @@ namespace LitJson
                 else
                 {
                     KeyValuePair<string, JsonData> entry = object_list[index];
-                    KeyValuePair<string, JsonData> new_entry =
+                    var new_entry =
                         new KeyValuePair<string, JsonData>(entry.Key, value);
 
                     object_list[index] = new_entry;
@@ -357,10 +343,11 @@ namespace LitJson
                 json = null;
             }
         }
+
         #endregion
 
-
         #region Constructors
+
         public JsonData()
         {
         }
@@ -394,35 +381,35 @@ namespace LitJson
             if (obj is Boolean)
             {
                 type = JsonType.Boolean;
-                inst_boolean = (bool)obj;
+                inst_boolean = (bool) obj;
                 return;
             }
 
             if (obj is Double)
             {
                 type = JsonType.Double;
-                inst_double = (double)obj;
+                inst_double = (double) obj;
                 return;
             }
 
             if (obj is Int32)
             {
                 type = JsonType.Int;
-                inst_int = (int)obj;
+                inst_int = (int) obj;
                 return;
             }
 
             if (obj is Int64)
             {
                 type = JsonType.Long;
-                inst_long = (long)obj;
+                inst_long = (long) obj;
                 return;
             }
 
             if (obj is String)
             {
                 type = JsonType.String;
-                inst_string = (string)obj;
+                inst_string = (string) obj;
                 return;
             }
 
@@ -435,10 +422,11 @@ namespace LitJson
             type = JsonType.String;
             inst_string = str;
         }
+
         #endregion
 
-
         #region Implicit Conversions
+
         public static implicit operator JsonData(Boolean data)
         {
             return new JsonData(data);
@@ -463,10 +451,11 @@ namespace LitJson
         {
             return new JsonData(data);
         }
+
         #endregion
 
-
         #region Explicit Conversions
+
         public static explicit operator Boolean(JsonData data)
         {
             if (data.type != JsonType.Boolean)
@@ -511,26 +500,28 @@ namespace LitJson
 
             return data.inst_string;
         }
+
         #endregion
 
-
         #region ICollection Methods
+
         void ICollection.CopyTo(Array array, int index)
         {
             EnsureCollection().CopyTo(array, index);
         }
+
         #endregion
 
-
         #region IDictionary Methods
+
         void IDictionary.Add(object key, object value)
         {
             JsonData data = ToJsonData(value);
 
             EnsureDictionary().Add(key, data);
 
-            KeyValuePair<string, JsonData> entry =
-                new KeyValuePair<string, JsonData>((string)key, data);
+            var entry =
+                new KeyValuePair<string, JsonData>((string) key, data);
             object_list.Add(entry);
 
             json = null;
@@ -548,14 +539,9 @@ namespace LitJson
             return EnsureDictionary().Contains(key);
         }
 
-        public bool ContainsKey(object key)
-        {
-            return EnsureDictionary().Contains(key);
-        }
-
         IDictionaryEnumerator IDictionary.GetEnumerator()
         {
-            return ((IOrderedDictionary)this).GetEnumerator();
+            return ((IOrderedDictionary) this).GetEnumerator();
         }
 
         void IDictionary.Remove(object key)
@@ -564,7 +550,7 @@ namespace LitJson
 
             for (int i = 0; i < object_list.Count; i++)
             {
-                if (object_list[i].Key == (string)key)
+                if (object_list[i].Key == (string) key)
                 {
                     object_list.RemoveAt(i);
                     break;
@@ -573,18 +559,25 @@ namespace LitJson
 
             json = null;
         }
+
+        public bool ContainsKey(object key)
+        {
+            return EnsureDictionary().Contains(key);
+        }
+
         #endregion
 
-
         #region IEnumerable Methods
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return EnsureCollection().GetEnumerator();
         }
+
         #endregion
 
-
         #region IJsonWrapper Methods
+
         bool IJsonWrapper.GetBoolean()
         {
             if (type != JsonType.Boolean)
@@ -674,10 +667,11 @@ namespace LitJson
         {
             ToJson(writer);
         }
+
         #endregion
 
-
         #region IList Methods
+
         int IList.Add(object value)
         {
             return Add(value);
@@ -716,10 +710,11 @@ namespace LitJson
             EnsureList().RemoveAt(index);
             json = null;
         }
+
         #endregion
 
-
         #region IOrderedDictionary Methods
+
         IDictionaryEnumerator IOrderedDictionary.GetEnumerator()
         {
             EnsureDictionary();
@@ -730,12 +725,12 @@ namespace LitJson
 
         void IOrderedDictionary.Insert(int idx, object key, object value)
         {
-            string property = (string)key;
+            var property = (string) key;
             JsonData data = ToJsonData(value);
 
             this[property] = data;
 
-            KeyValuePair<string, JsonData> entry =
+            var entry =
                 new KeyValuePair<string, JsonData>(property, data);
 
             object_list.Insert(idx, entry);
@@ -748,17 +743,18 @@ namespace LitJson
             inst_object.Remove(object_list[idx].Key);
             object_list.RemoveAt(idx);
         }
+
         #endregion
 
-
         #region Private Methods
+
         private ICollection EnsureCollection()
         {
             if (type == JsonType.Array)
-                return (ICollection)inst_array;
+                return (ICollection) inst_array;
 
             if (type == JsonType.Object)
-                return (ICollection)inst_object;
+                return (ICollection) inst_object;
 
             throw new InvalidOperationException(
                 "The JsonData instance has to be initialized first");
@@ -767,7 +763,7 @@ namespace LitJson
         private IDictionary EnsureDictionary()
         {
             if (type == JsonType.Object)
-                return (IDictionary)inst_object;
+                return (IDictionary) inst_object;
 
             if (type != JsonType.None)
                 throw new InvalidOperationException(
@@ -777,13 +773,13 @@ namespace LitJson
             inst_object = new Dictionary<string, JsonData>();
             object_list = new List<KeyValuePair<string, JsonData>>();
 
-            return (IDictionary)inst_object;
+            return (IDictionary) inst_object;
         }
 
         private IList EnsureList()
         {
             if (type == JsonType.Array)
-                return (IList)inst_array;
+                return (IList) inst_array;
 
             if (type != JsonType.None)
                 throw new InvalidOperationException(
@@ -792,7 +788,7 @@ namespace LitJson
             type = JsonType.Array;
             inst_array = new List<JsonData>();
 
-            return (IList)inst_array;
+            return (IList) inst_array;
         }
 
         private JsonData ToJsonData(object obj)
@@ -801,7 +797,7 @@ namespace LitJson
                 return null;
 
             if (obj is JsonData)
-                return (JsonData)obj;
+                return (JsonData) obj;
 
             return new JsonData(obj);
         }
@@ -847,8 +843,8 @@ namespace LitJson
             if (obj.IsArray)
             {
                 writer.WriteArrayStart();
-                foreach (object elem in (IList)obj)
-                    WriteJson((JsonData)elem, writer);
+                foreach (object elem in (IList) obj)
+                    WriteJson((JsonData) elem, writer);
                 writer.WriteArrayEnd();
 
                 return;
@@ -858,18 +854,56 @@ namespace LitJson
             {
                 writer.WriteObjectStart();
 
-                foreach (DictionaryEntry entry in ((IDictionary)obj))
+                foreach (DictionaryEntry entry in ((IDictionary) obj))
                 {
-                    writer.WritePropertyName((string)entry.Key);
-                    WriteJson((JsonData)entry.Value, writer);
+                    writer.WritePropertyName((string) entry.Key);
+                    WriteJson((JsonData) entry.Value, writer);
                 }
                 writer.WriteObjectEnd();
 
                 return;
             }
         }
+
         #endregion
 
+        public bool Equals(JsonData x)
+        {
+            if (x == null)
+                return false;
+
+            if (x.type != type)
+                return false;
+
+            switch (type)
+            {
+                case JsonType.None:
+                    return true;
+
+                case JsonType.Object:
+                    return inst_object.Equals(x.inst_object);
+
+                case JsonType.Array:
+                    return inst_array.Equals(x.inst_array);
+
+                case JsonType.String:
+                    return inst_string.Equals(x.inst_string);
+
+                case JsonType.Int:
+                    return inst_int.Equals(x.inst_int);
+
+                case JsonType.Long:
+                    return inst_long.Equals(x.inst_long);
+
+                case JsonType.Double:
+                    return inst_double.Equals(x.inst_double);
+
+                case JsonType.Boolean:
+                    return inst_boolean.Equals(x.inst_boolean);
+            }
+
+            return false;
+        }
 
         public int Add(object value)
         {
@@ -884,53 +918,15 @@ namespace LitJson
         {
             if (IsObject)
             {
-                ((IDictionary)this).Clear();
+                ((IDictionary) this).Clear();
                 return;
             }
 
             if (IsArray)
             {
-                ((IList)this).Clear();
+                ((IList) this).Clear();
                 return;
             }
-        }
-
-        public bool Equals(JsonData x)
-        {
-            if (x == null)
-                return false;
-
-            if (x.type != this.type)
-                return false;
-
-            switch (this.type)
-            {
-                case JsonType.None:
-                    return true;
-
-                case JsonType.Object:
-                    return this.inst_object.Equals(x.inst_object);
-
-                case JsonType.Array:
-                    return this.inst_array.Equals(x.inst_array);
-
-                case JsonType.String:
-                    return this.inst_string.Equals(x.inst_string);
-
-                case JsonType.Int:
-                    return this.inst_int.Equals(x.inst_int);
-
-                case JsonType.Long:
-                    return this.inst_long.Equals(x.inst_long);
-
-                case JsonType.Double:
-                    return this.inst_double.Equals(x.inst_double);
-
-                case JsonType.Boolean:
-                    return this.inst_boolean.Equals(x.inst_boolean);
-            }
-
-            return false;
         }
 
         public JsonType GetJsonType()
@@ -986,8 +982,8 @@ namespace LitJson
             if (json != null)
                 return json;
 
-            StringWriter sw = new StringWriter();
-            JsonWriter writer = new JsonWriter(sw);
+            var sw = new StringWriter();
+            var writer = new JsonWriter(sw);
             writer.Validate = false;
 
             WriteJson(this, writer);
@@ -1040,7 +1036,13 @@ namespace LitJson
 
     internal class OrderedDictionaryEnumerator : IDictionaryEnumerator
     {
-        IEnumerator<KeyValuePair<string, JsonData>> list_enumerator;
+        private readonly IEnumerator<KeyValuePair<string, JsonData>> list_enumerator;
+
+        public OrderedDictionaryEnumerator(
+            IEnumerator<KeyValuePair<string, JsonData>> enumerator)
+        {
+            list_enumerator = enumerator;
+        }
 
 
         public object Current
@@ -1065,13 +1067,6 @@ namespace LitJson
         public object Value
         {
             get { return list_enumerator.Current.Value; }
-        }
-
-
-        public OrderedDictionaryEnumerator(
-            IEnumerator<KeyValuePair<string, JsonData>> enumerator)
-        {
-            list_enumerator = enumerator;
         }
 
 

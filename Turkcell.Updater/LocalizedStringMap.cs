@@ -6,18 +6,17 @@ using Turkcell.Updater.Utility;
 
 namespace Turkcell.Updater
 {
-
     /// <summary>
-    /// Provides base class for language specific set of Strings. Every String value has its own key.
+    ///     Provides base class for language specific set of Strings. Every String value has its own key.
     /// </summary>
     public abstract class LocalizedStringMap
     {
-
         /// <summary>
-        /// Two letter language code defining language of contents. <strong>null</strong> means no language is specified.
+        ///     Two letter language code defining language of contents. <strong>null</strong> means no language is specified.
         /// </summary>
         public readonly String LanguageCode;
-        readonly Dictionary<String, String> _map;
+
+        private readonly Dictionary<String, String> _map;
 
         internal LocalizedStringMap(String languageCode, Dictionary<String, String> map)
         {
@@ -32,7 +31,7 @@ namespace Turkcell.Updater
             _map = new Dictionary<string, string>();
             if (jsonObject != null)
             {
-                foreach (var key in jsonObject.Keys)
+                foreach (string key in jsonObject.Keys)
                 {
                     if (key != null)
                     {
@@ -41,11 +40,10 @@ namespace Turkcell.Updater
                     }
                 }
             }
-
         }
 
         /// <summary>
-        /// Returns the string value corresponding to given key.
+        ///     Returns the string value corresponding to given key.
         /// </summary>
         /// <param name="key">Key for the string value</param>
         public string this[string key]
@@ -61,7 +59,7 @@ namespace Turkcell.Updater
         }
 
         /// <summary>
-        /// Returns the list of available keys.
+        ///     Returns the list of available keys.
         /// </summary>
         /// <returns></returns>
         public List<String> GetKeys()
@@ -73,7 +71,7 @@ namespace Turkcell.Updater
         {
             languageCode = StringUtils.Normalize(languageCode);
             if (string.IsNullOrEmpty(languageCode)
-                    || languageCode.Equals("*"))
+                || languageCode.Equals("*"))
             {
                 return null;
             }
@@ -85,9 +83,9 @@ namespace Turkcell.Updater
         {
             const int prime = 31;
             int result = 1;
-            result = prime * result
-                    + ((LanguageCode == null) ? 0 : LanguageCode.GetHashCode());
-            result = prime * result + ((_map == null) ? 0 : _map.GetHashCode());
+            result = prime*result
+                     + ((LanguageCode == null) ? 0 : LanguageCode.GetHashCode());
+            result = prime*result + ((_map == null) ? 0 : _map.GetHashCode());
             return result;
         }
 
@@ -99,7 +97,7 @@ namespace Turkcell.Updater
                 return false;
             if (obj.GetType() != GetType())
                 return false;
-            var other = (LocalizedStringMap)obj;
+            var other = (LocalizedStringMap) obj;
             if (LanguageCode == null)
             {
                 if (other.LanguageCode != null)
@@ -135,9 +133,9 @@ namespace Turkcell.Updater
                     }
 
                     if (normalizedLanguageCode2.Equals("*")
-                            || normalizedLanguageCode2.Equals("")
-                            || normalizedLanguageCode2
-                                    .Equals(normalizedLanguageCode))
+                        || normalizedLanguageCode2.Equals("")
+                        || normalizedLanguageCode2
+                               .Equals(normalizedLanguageCode))
                     {
                         result = t;
                     }
@@ -149,7 +147,6 @@ namespace Turkcell.Updater
 
         public override String ToString()
         {
-
             String mapAsString;
 
             if (_map == null)
@@ -180,10 +177,7 @@ namespace Turkcell.Updater
             }
 
             return "LocalizedStringMap [languageCode=" + LanguageCode + ", map="
-                    + mapAsString + "]";
+                   + mapAsString + "]";
         }
-
-
-
     }
 }

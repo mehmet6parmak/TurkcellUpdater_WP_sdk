@@ -1,4 +1,5 @@
 #region Header
+
 /**
  * JsonWriter.cs
  *   Stream-like facility to output JSON text.
@@ -6,15 +7,14 @@
  * The authors disclaim copyright to this source code. For more details, see
  * the COPYING file included with this distribution.
  **/
-#endregion
 
+#endregion
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
-
 
 namespace LitJson
 {
@@ -30,37 +30,39 @@ namespace LitJson
     internal class WriterContext
     {
         public int Count;
+        public bool ExpectingValue;
         public bool InArray;
         public bool InObject;
-        public bool ExpectingValue;
         public int Padding;
     }
 
     internal class JsonWriter : IDisposable
     {
         #region Fields
-        private static NumberFormatInfo number_format;
+
+        private static readonly NumberFormatInfo number_format;
+        private readonly StringBuilder inst_string_builder;
 
         private WriterContext context;
         private Stack<WriterContext> ctx_stack;
         private bool has_reached_end;
         private char[] hex_seq;
-        private int indentation;
         private int indent_value;
-        private StringBuilder inst_string_builder;
+        private int indentation;
         private bool pretty_print;
         private bool validate;
         private TextWriter writer;
+
         #endregion
 
-
         #region Properties
+
         public int IndentValue
         {
             get { return indent_value; }
             set
             {
-                indentation = (indentation / indent_value) * value;
+                indentation = (indentation/indent_value)*value;
                 indent_value = value;
             }
         }
@@ -81,10 +83,11 @@ namespace LitJson
             get { return validate; }
             set { validate = value; }
         }
+
         #endregion
 
-
         #region Constructors
+
         static JsonWriter()
         {
             number_format = NumberFormatInfo.InvariantInfo;
@@ -112,10 +115,11 @@ namespace LitJson
 
             Init();
         }
+
         #endregion
 
-
         #region Private Methods
+
         private void DoValidation(Condition cond)
         {
             if (!context.ExpectingValue)
@@ -184,12 +188,12 @@ namespace LitJson
 
             for (int i = 0; i < 4; i++)
             {
-                num = n % 16;
+                num = n%16;
 
                 if (num < 10)
-                    hex[3 - i] = (char)('0' + num);
+                    hex[3 - i] = (char) ('0' + num);
                 else
-                    hex[3 - i] = (char)('A' + (num - 10));
+                    hex[3 - i] = (char) ('A' + (num - 10));
 
                 n >>= 4;
             }
@@ -264,14 +268,14 @@ namespace LitJson
                         continue;
                 }
 
-                if ((int)str[i] >= 32 && (int)str[i] <= 126)
+                if (str[i] >= 32 && str[i] <= 126)
                 {
                     writer.Write(str[i]);
                     continue;
                 }
 
                 // Default, turn into a \uXXXX sequence
-                IntToHex((int)str[i], hex_seq);
+                IntToHex(str[i], hex_seq);
                 writer.Write("\\u");
                 writer.Write(hex_seq);
             }
@@ -284,8 +288,16 @@ namespace LitJson
             if (pretty_print)
                 indentation -= indent_value;
         }
+
         #endregion
 
+        private bool _disposed;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         public override string ToString()
         {
@@ -463,7 +475,8 @@ namespace LitJson
                     context.Padding = property_name.Length;
 
                 for (int i = context.Padding - property_name.Length;
-                     i >= 0; i--)
+                     i >= 0;
+                     i--)
                     writer.Write(' ');
 
                 writer.Write(": ");
@@ -475,13 +488,6 @@ namespace LitJson
         }
 
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private bool _disposed;
         private void Dispose(bool disposing)
         {
             if (!_disposed)
@@ -495,7 +501,8 @@ namespace LitJson
                         writer = null;
                     }
                     catch
-                    { }
+                    {
+                    }
                 }
 
                 // There are no unmanaged resources to release, but

@@ -9,12 +9,14 @@ namespace Turkcell.Updater
 
         private TurkcellUpdaterClient()
         {
-            DefaultRequestHeaders.Add("User-Agent", "TurkcellUpdater/" + Configuration.ProductVersion.Major + "." + Configuration.ProductVersion.Minor);
+            DefaultRequestHeaders.Add("User-Agent",
+                                      "TurkcellUpdater/" + Configuration.ProductVersion.Major + "." +
+                                      Configuration.ProductVersion.Minor);
         }
 
         internal async Task<TurkcellUpdaterResponse> RequestAsync(VersionMapRequest request)
         {
-            var httpResponseMessage = await SendAsync(request);
+            HttpResponseMessage httpResponseMessage = await SendAsync(request);
             request.Response = httpResponseMessage;
             return await request.ToResponseAsync();
         }

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO.IsolatedStorage;
 
 namespace Turkcell.Updater.Utility
@@ -8,14 +7,18 @@ namespace Turkcell.Updater.Utility
     internal class IsolatedStorageSettingsHelper
     {
         private static readonly object SyncObject = new object();
+
+        public static ICollection Keys
+        {
+            get { return IsolatedStorageSettings.ApplicationSettings.Keys; }
+        }
+
         public static void SaveItem(string key, object item, bool save = true)
         {
             IsolatedStorageSettings.ApplicationSettings[key] = item;
             if (save)
                 Save();
         }
-
-        public static ICollection Keys { get { return IsolatedStorageSettings.ApplicationSettings.Keys; } } 
 
         public static void SaveItems(Dictionary<string, object> items)
         {

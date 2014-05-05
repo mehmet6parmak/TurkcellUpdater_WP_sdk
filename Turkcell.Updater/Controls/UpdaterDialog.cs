@@ -11,7 +11,7 @@ using Microsoft.Phone.Shell;
 namespace Turkcell.Updater.Controls
 {
     /// <summary>
-    /// CustomDialog class which is used showing <see cref="Update"/> and <see cref="Message"/> details.
+    ///     CustomDialog class which is used showing <see cref="Update" /> and <see cref="Message" /> details.
     /// </summary>
     public class UpdaterDialog : ContentControl
     {
@@ -22,115 +22,134 @@ namespace Turkcell.Updater.Controls
          * The remedy is to make it part of the visual tree of your page by making it the child of some element.
          */
 
-        internal Boolean IsCancellable { get; set; }
+        private const int ButtonsRowHeight = 100;
 
         /// <summary>
-        /// Gets or sets the title.
+        ///     The height of the system tray in pixels when the page
+        ///     is in portrait mode.
         /// </summary>
-        public string Title
-        {
-            get { return (string)GetValue(TitleProperty); }
-            set { SetValue(TitleProperty, value); }
-        }
+        private const double PortraitStatusBarHeight = 32.0;
 
         /// <summary>
-        /// Identifies the Title dependency property.
+        ///     The width of the system tray in pixels when the page
+        ///     is in landscape mode.
+        /// </summary>
+        private const double LandscapeStatusBarWidth = 72.0;
+
+        /// <summary>
+        ///     Identifies the Title dependency property.
         /// </summary>
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(string), typeof(UpdaterDialog), new PropertyMetadata(string.Empty, null));
+            DependencyProperty.Register("Title", typeof (string), typeof (UpdaterDialog),
+                                        new PropertyMetadata(string.Empty, null));
 
 
         /// <summary>
-        /// Gets or sets the Positive Button's Content property.
-        /// </summary>
-        public string PositiveButtonText
-        {
-            get { return (string)GetValue(PositiveButtonTextProperty); }
-            set { SetValue(PositiveButtonTextProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the PositiveButtonText dependency property.
+        ///     Identifies the PositiveButtonText dependency property.
         /// </summary>
         public static readonly DependencyProperty PositiveButtonTextProperty =
-            DependencyProperty.Register("PositiveButtonText", typeof(string), typeof(UpdaterDialog), new PropertyMetadata(string.Empty, null));
+            DependencyProperty.Register("PositiveButtonText", typeof (string), typeof (UpdaterDialog),
+                                        new PropertyMetadata(string.Empty, null));
 
         /// <summary>
-        /// Gets or sets the Positive Button's Content property.
-        /// </summary>
-        public string NegativeButtonText
-        {
-            get { return (string)GetValue(NegativeButtonTextProperty); }
-            set { SetValue(NegativeButtonTextProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the PositiveButtonText dependency property.
+        ///     Identifies the PositiveButtonText dependency property.
         /// </summary>
         public static readonly DependencyProperty NegativeButtonTextProperty =
-            DependencyProperty.Register("NegativeButtonText", typeof(string), typeof(UpdaterDialog), new PropertyMetadata(string.Empty, null));
+            DependencyProperty.Register("NegativeButtonText", typeof (string), typeof (UpdaterDialog),
+                                        new PropertyMetadata(string.Empty, null));
 
 
         /// <summary>
-        /// Sets the <see cref="ICommand"/> to invoke when the Positive button tapped.
-        /// </summary>
-        public ICommand PositiveButtonCommand
-        {
-            get { return (ICommand)GetValue(PositiveButtonCommandProperty); }
-            set { SetValue(PositiveButtonCommandProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the PositiveButtonCommand.
+        ///     Identifies the PositiveButtonCommand.
         /// </summary>
         public static readonly DependencyProperty PositiveButtonCommandProperty =
-            DependencyProperty.Register("PositiveButtonCommand", typeof(ICommand), typeof(UpdaterDialog),
+            DependencyProperty.Register("PositiveButtonCommand", typeof (ICommand), typeof (UpdaterDialog),
                                         new PropertyMetadata(null, null));
 
 
         /// <summary>
-        /// Sets the <see cref="ICommand"/> to invoke when the Positive button tapped.
-        /// </summary>
-        public ICommand NegativeButtonCommand
-        {
-            get { return (ICommand)GetValue(NegativeButtonCommandProperty); }
-            set { SetValue(NegativeButtonCommandProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the PositiveButtonCommand.
+        ///     Identifies the PositiveButtonCommand.
         /// </summary>
         public static readonly DependencyProperty NegativeButtonCommandProperty =
-            DependencyProperty.Register("NegativeButtonCommand", typeof(ICommand), typeof(UpdaterDialog),
+            DependencyProperty.Register("NegativeButtonCommand", typeof (ICommand), typeof (UpdaterDialog),
                                         new PropertyMetadata(null, null));
 
+        private static readonly double ScreenHeight = Application.Current.Host.Content.ActualHeight;
+        private static readonly double ScreenWidth = Application.Current.Host.Content.ActualWidth;
+
+
+        private readonly Popup _popup;
+
+        private PhoneApplicationFrame _frame;
+        private Button _negativeButton;
+        private PhoneApplicationPage _page;
+        private Button _positiveButton;
+        private ScrollViewer _scrollContent;
+        private Grid _transparentContainer;
+        private TextBlock _txtTitle;
 
         /// <summary>
-        /// 
         /// </summary>
         public UpdaterDialog()
         {
             IsCancellable = true;
-            DefaultStyleKey = typeof(UpdaterDialog);
+            DefaultStyleKey = typeof (UpdaterDialog);
             Background = new SolidColorBrush(Colors.Black);
             _popup = new Popup();
         }
 
-        private Grid _transparentContainer;
-        private TextBlock _txtTitle;
-        private readonly Popup _popup;
-        private ScrollViewer _scrollContent;
-
-        private Button _positiveButton;
-        private Button _negativeButton;
-
-        private PhoneApplicationFrame _frame;
-        private PhoneApplicationPage _page;
-
-        private const int ButtonsRowHeight = 100;
+        internal Boolean IsCancellable { get; set; }
 
         /// <summary>
-        /// When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>. In simplest terms, this means the method is called just before a UI element displays in an application. For more information, see Remarks.
+        ///     Gets or sets the title.
+        /// </summary>
+        public string Title
+        {
+            get { return (string) GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        /// <summary>
+        ///     Gets or sets the Positive Button's Content property.
+        /// </summary>
+        public string PositiveButtonText
+        {
+            get { return (string) GetValue(PositiveButtonTextProperty); }
+            set { SetValue(PositiveButtonTextProperty, value); }
+        }
+
+        /// <summary>
+        ///     Gets or sets the Positive Button's Content property.
+        /// </summary>
+        public string NegativeButtonText
+        {
+            get { return (string) GetValue(NegativeButtonTextProperty); }
+            set { SetValue(NegativeButtonTextProperty, value); }
+        }
+
+        /// <summary>
+        ///     Sets the <see cref="ICommand" /> to invoke when the Positive button tapped.
+        /// </summary>
+        public ICommand PositiveButtonCommand
+        {
+            get { return (ICommand) GetValue(PositiveButtonCommandProperty); }
+            set { SetValue(PositiveButtonCommandProperty, value); }
+        }
+
+        /// <summary>
+        ///     Sets the <see cref="ICommand" /> to invoke when the Positive button tapped.
+        /// </summary>
+        public ICommand NegativeButtonCommand
+        {
+            get { return (ICommand) GetValue(NegativeButtonCommandProperty); }
+            set { SetValue(NegativeButtonCommandProperty, value); }
+        }
+
+        /// <summary>
+        ///     When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call
+        ///     <see
+        ///         cref="M:System.Windows.Controls.Control.ApplyTemplate" />
+        ///     . In simplest terms, this means the method is called just before a UI element displays in an application. For more information, see Remarks.
         /// </summary>
         public override void OnApplyTemplate()
         {
@@ -183,12 +202,12 @@ namespace Turkcell.Updater.Controls
         }
 
         /// <summary>
-        /// Fired when the dialog is dismissed because of Back button press.
+        ///     Fired when the dialog is dismissed because of Back button press.
         /// </summary>
         internal event EventHandler<EventArgs> Dismissed;
 
         /// <summary>
-        /// Called when the popup is dismissed by a BackKey press.
+        ///     Called when the popup is dismissed by a BackKey press.
         /// </summary>
         protected virtual void OnDismissed()
         {
@@ -196,7 +215,7 @@ namespace Turkcell.Updater.Controls
             if (handler != null) handler(this, EventArgs.Empty);
         }
 
-        void NegativeButtonTap(object sender, GestureEventArgs e)
+        private void NegativeButtonTap(object sender, GestureEventArgs e)
         {
             CloseDialog();
         }
@@ -222,11 +241,12 @@ namespace Turkcell.Updater.Controls
                 }
             }
             catch (Exception)
-            { }
+            {
+            }
         }
 
         /// <summary>
-        /// Makes contents of the <see cref="UpdaterDialog"/> instance visible with an overlaying <see cref="Popup"/> control.
+        ///     Makes contents of the <see cref="UpdaterDialog" /> instance visible with an overlaying <see cref="Popup" /> control.
         /// </summary>
         public void Show()
         {
@@ -253,7 +273,7 @@ namespace Turkcell.Updater.Controls
             }
         }
 
-        void _page_OrientationChanged(object sender, OrientationChangedEventArgs e)
+        private void _page_OrientationChanged(object sender, OrientationChangedEventArgs e)
         {
             AdjustPopupPosition();
         }
@@ -268,9 +288,9 @@ namespace Turkcell.Updater.Controls
                 {
                     case PageOrientation.LandscapeLeft:
                     case PageOrientation.Landscape:
-                        return new CompositeTransform { Rotation = 90, TranslateX = ScreenWidth };
+                        return new CompositeTransform {Rotation = 90, TranslateX = ScreenWidth};
                     case PageOrientation.LandscapeRight:
-                        return new CompositeTransform { Rotation = -90, TranslateY = ScreenHeight };
+                        return new CompositeTransform {Rotation = -90, TranslateY = ScreenHeight};
                 }
             }
             return null;
@@ -316,7 +336,7 @@ namespace Turkcell.Updater.Controls
             }
         }
 
-        void PageBackKeyPress(object sender, CancelEventArgs e)
+        private void PageBackKeyPress(object sender, CancelEventArgs e)
         {
             if (_popup.IsOpen && IsCancellable)
             {
@@ -335,22 +355,5 @@ namespace Turkcell.Updater.Controls
             _popup.IsOpen = false;
             CleanAsync();
         }
-
-
-        private static readonly double ScreenHeight = Application.Current.Host.Content.ActualHeight;
-        private static readonly double ScreenWidth = Application.Current.Host.Content.ActualWidth;
-
-        /// <summary>
-        /// The height of the system tray in pixels when the page
-        /// is in portrait mode.
-        /// </summary>
-        private const double PortraitStatusBarHeight = 32.0;
-
-        /// <summary>
-        /// The width of the system tray in pixels when the page
-        /// is in landscape mode.
-        /// </summary>
-        private const double LandscapeStatusBarWidth = 72.0;
-
     }
 }

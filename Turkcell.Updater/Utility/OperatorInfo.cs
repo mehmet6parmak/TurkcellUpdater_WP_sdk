@@ -6,7 +6,7 @@ namespace Turkcell.Updater.Utility
     {
         public String MobileCountryCode;
         public String MobileNetworkCode;
-        
+
         public OperatorInfo()
         {
             MobileCountryCode = MobileCountryCodes.Turkey;
@@ -14,7 +14,7 @@ namespace Turkcell.Updater.Utility
 
         public static OperatorInfo CreateEmpty()
         {
-            return new OperatorInfo { MobileCountryCode = String.Empty };
+            return new OperatorInfo {MobileCountryCode = String.Empty};
         }
     }
 }

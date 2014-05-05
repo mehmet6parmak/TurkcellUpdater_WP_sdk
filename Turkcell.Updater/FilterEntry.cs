@@ -4,9 +4,8 @@ using LitJson;
 
 namespace Turkcell.Updater
 {
-
     /// <summary>
-    /// Base class for information that can be filtered by a list of <see cref="Filter"/>s
+    ///     Base class for information that can be filtered by a list of <see cref="Filter" />s
     /// </summary>
     internal class FilteredEntry
     {
@@ -32,9 +31,9 @@ namespace Turkcell.Updater
 
             if (filtersObject != null)
             {
-                foreach (var key in filtersObject.Keys)
+                foreach (string key in filtersObject.Keys)
                 {
-                    var rule = filtersObject[key].ToString();
+                    string rule = filtersObject[key].ToString();
                     var filter = new Filter(key, rule);
                     result.Add(filter);
                 }
@@ -47,7 +46,6 @@ namespace Turkcell.Updater
         {
             if (_filters != null)
             {
-
                 foreach (Filter filter in _filters)
                 {
                     if (filter != null)
@@ -70,5 +68,4 @@ namespace Turkcell.Updater
             return true;
         }
     }
-
 }

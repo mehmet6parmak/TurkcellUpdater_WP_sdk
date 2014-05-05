@@ -5,35 +5,61 @@ using Turkcell.Updater.Utility;
 namespace Turkcell.Updater
 {
     /// <summary>
-    /// Checks if given value matches with filtering rule.<br/>
-    /// <li>Rules are sequences of rule parts joined with ","</li>
-    /// <li>Both rule parts and values are converted to lower case and trimmed before
-    /// comparison</li>
-    /// <li>Order of rule parts doesn't change the result, example: "!b,a" is same with "a,!b"</li>
-    /// <li><strong>"*"</strong>, <strong>null</strong> or empty string matches with any value including
-    /// <strong>null</strong></li>
-    /// <li><strong>"''"</strong> matches with <strong>null</strong> or empty string</li>
-    /// <li><strong>"!''"</strong> matches with any value except <strong>null</strong> or empty string</li>
-    /// <li><strong>"![rule part]"</strong> excludes any value matches with [rule].</li>
-    /// <li><strong>"[value]"</strong> matches with any value equals to [value]</li>
-    /// <li><strong>"[prefix]*"</strong> matches with any value starting with [prefix]</li>
-    /// <li><strong>"*[suffix]"</strong> matches with any value ending with [suffix]</li>
-    /// <li><strong>"[prefix]*[suffix]"</strong> matches with any value starting with [prefix] and
-    /// ending with [suffix]</li>
-    /// <li><strong>"&gt;[integer]"</strong> matches with any value greater than [integer]</li>
-    /// <li><strong>"&gt;=[integer]"</strong> matches with any value greater than or equals to [integer]</li>
-    /// <li><strong>"&lt;[integer]"</strong> matches with any value lesser than [integer]</li>
-    /// <li><strong>"&lt;=[integer]"</strong> matches with any value lesser than or equals to [integer]</li>
-    /// <li><strong>"&lt;&gt;[integer]"</strong> matches with any value not equals to [integer]</li>
+    ///     Checks if given value matches with filtering rule.<br />
+    ///     <li>Rules are sequences of rule parts joined with ","</li>
+    ///     <li>
+    ///         Both rule parts and values are converted to lower case and trimmed before
+    ///         comparison
+    ///     </li>
+    ///     <li>Order of rule parts doesn't change the result, example: "!b,a" is same with "a,!b"</li>
+    ///     <li>
+    ///         <strong>"*"</strong>, <strong>null</strong> or empty string matches with any value including
+    ///         <strong>null</strong>
+    ///     </li>
+    ///     <li>
+    ///         <strong>"''"</strong> matches with <strong>null</strong> or empty string
+    ///     </li>
+    ///     <li>
+    ///         <strong>"!''"</strong> matches with any value except <strong>null</strong> or empty string
+    ///     </li>
+    ///     <li>
+    ///         <strong>"![rule part]"</strong> excludes any value matches with [rule].
+    ///     </li>
+    ///     <li>
+    ///         <strong>"[value]"</strong> matches with any value equals to [value]
+    ///     </li>
+    ///     <li>
+    ///         <strong>"[prefix]*"</strong> matches with any value starting with [prefix]
+    ///     </li>
+    ///     <li>
+    ///         <strong>"*[suffix]"</strong> matches with any value ending with [suffix]
+    ///     </li>
+    ///     <li>
+    ///         <strong>"[prefix]*[suffix]"</strong> matches with any value starting with [prefix] and
+    ///         ending with [suffix]
+    ///     </li>
+    ///     <li>
+    ///         <strong>"&gt;[integer]"</strong> matches with any value greater than [integer]
+    ///     </li>
+    ///     <li>
+    ///         <strong>"&gt;=[integer]"</strong> matches with any value greater than or equals to [integer]
+    ///     </li>
+    ///     <li>
+    ///         <strong>"&lt;[integer]"</strong> matches with any value lesser than [integer]
+    ///     </li>
+    ///     <li>
+    ///         <strong>"&lt;=[integer]"</strong> matches with any value lesser than or equals to [integer]
+    ///     </li>
+    ///     <li>
+    ///         <strong>"&lt;&gt;[integer]"</strong> matches with any value not equals to [integer]
+    ///     </li>
     /// </summary>
     public class Filter
     {
-        internal string Name { get { return _name; } }
-        readonly String _name;
-        readonly String _rule;
+        private readonly String _name;
+        private readonly String _rule;
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="name"></param>
         /// <param name="rule"></param>
@@ -41,6 +67,11 @@ namespace Turkcell.Updater
         {
             _name = name;
             _rule = rule;
+        }
+
+        internal string Name
+        {
+            get { return _name; }
         }
 
         internal bool IsMatchesWith(String value)
@@ -65,7 +96,7 @@ namespace Turkcell.Updater
             // example: "abc" should not match with "a*c,!*b*" rule
             bool matchedWithAnIncludeFilter = false;
 
-            String[] ruleParts = rule.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            String[] ruleParts = rule.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < ruleParts.Length; i++)
             {
                 String part = StringUtils.Normalize(ruleParts[i]);
@@ -99,7 +130,6 @@ namespace Turkcell.Updater
                         }
                     }
                 }
-
             }
 
             return onlyExcludeFiltersFound || matchedWithAnIncludeFilter;
@@ -115,7 +145,8 @@ namespace Turkcell.Updater
             {
                 Version valueAsVersion;
                 Version referenceVersion;
-                if (Version.TryParse(value, out valueAsVersion) && Version.TryParse(rulePart.Substring(2).Trim(), out referenceVersion))
+                if (Version.TryParse(value, out valueAsVersion) &&
+                    Version.TryParse(rulePart.Substring(2).Trim(), out referenceVersion))
                 {
                     return valueAsVersion != referenceVersion;
                 }
@@ -132,11 +163,12 @@ namespace Turkcell.Updater
             {
                 Version valueAsVersion;
                 Version referenceVersion;
-                if (Version.TryParse(value, out valueAsVersion) && Version.TryParse(rulePart.Substring(2).Trim(), out referenceVersion))
+                if (Version.TryParse(value, out valueAsVersion) &&
+                    Version.TryParse(rulePart.Substring(2).Trim(), out referenceVersion))
                 {
                     return valueAsVersion <= referenceVersion;
                 }
-                
+
                 int valueAsint;
                 int reference;
                 if (int.TryParse(value, out valueAsint) && int.TryParse(rulePart.Substring(2).Trim(), out reference))
@@ -149,7 +181,8 @@ namespace Turkcell.Updater
             {
                 Version valueAsVersion;
                 Version referenceVersion;
-                if (Version.TryParse(value, out valueAsVersion) && Version.TryParse(rulePart.Substring(2).Trim(), out referenceVersion))
+                if (Version.TryParse(value, out valueAsVersion) &&
+                    Version.TryParse(rulePart.Substring(2).Trim(), out referenceVersion))
                 {
                     return valueAsVersion >= referenceVersion;
                 }
@@ -166,7 +199,8 @@ namespace Turkcell.Updater
             {
                 Version valueAsVersion;
                 Version referenceVersion;
-                if (Version.TryParse(value, out valueAsVersion) && Version.TryParse(rulePart.Substring(1).Trim(), out referenceVersion))
+                if (Version.TryParse(value, out valueAsVersion) &&
+                    Version.TryParse(rulePart.Substring(1).Trim(), out referenceVersion))
                 {
                     return valueAsVersion < referenceVersion;
                 }
@@ -175,7 +209,6 @@ namespace Turkcell.Updater
                 int reference;
                 if (int.TryParse(value, out valueAsint) && int.TryParse(rulePart.Substring(1).Trim(), out reference))
                 {
-
                     return valueAsint < reference;
                 }
                 return false;
@@ -184,7 +217,8 @@ namespace Turkcell.Updater
             {
                 Version valueAsVersion;
                 Version referenceVersion;
-                if (Version.TryParse(value, out valueAsVersion) && Version.TryParse(rulePart.Substring(1).Trim(), out referenceVersion))
+                if (Version.TryParse(value, out valueAsVersion) &&
+                    Version.TryParse(rulePart.Substring(1).Trim(), out referenceVersion))
                 {
                     return valueAsVersion > referenceVersion;
                 }
@@ -213,6 +247,5 @@ namespace Turkcell.Updater
 
             return rulePart.Equals(value);
         }
-
     }
 }

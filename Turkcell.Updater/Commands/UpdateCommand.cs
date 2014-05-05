@@ -8,8 +8,8 @@ namespace Turkcell.Updater.Commands
 {
     internal class UpdateCommand : ICommand
     {
-        private readonly Update _update;
         private readonly UpdaterDialogManager _manager;
+        private readonly Update _update;
 
         public UpdateCommand(UpdaterDialogManager manager, Update update)
         {
@@ -26,8 +26,9 @@ namespace Turkcell.Updater.Commands
 
         public async void Execute(object parameter)
         {
-            if (!String.IsNullOrEmpty(_update.TargetPackageId) && !PackageUtility.IsInstalled(_update.TargetPackageId, _update.TargetVersion))
-            {                
+            if (!String.IsNullOrEmpty(_update.TargetPackageId) &&
+                !PackageUtility.IsInstalled(_update.TargetPackageId, _update.TargetVersion))
+            {
                 LaunchMarketplace();
                 OnExecuted();
             }
@@ -44,13 +45,13 @@ namespace Turkcell.Updater.Commands
         }
 
         private void LaunchMarketplace()
-        {            
+        {
             var task = new MarketplaceDetailTask
                 {
                     ContentType = MarketplaceContentType.Applications,
                     ContentIdentifier = _update.TargetPackageId
                 };
-            task.Show();            
+            task.Show();
         }
 
         private void OnExecuted()

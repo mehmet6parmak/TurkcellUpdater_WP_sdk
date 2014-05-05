@@ -8,25 +8,24 @@ namespace Turkcell.Updater
 {
     internal class MessageEntry : FilteredEntry
     {
-        internal readonly List<MessageDescription> MessageDescriptions;
-        internal readonly int Id;
-        internal readonly String TargetPackageId;
-        internal readonly Uri TargetWebsiteUrl;
-        internal readonly bool TargetMarketplace;
-        internal readonly int DisplayPeriodInHours;
         internal readonly DateTime? DisplayAfterDate;
         internal readonly DateTime? DisplayBeforeDate;
+        internal readonly int DisplayPeriodInHours;
+        internal readonly int Id;
         internal readonly int MaxDisplayCount;
+        internal readonly List<MessageDescription> MessageDescriptions;
+        internal readonly bool TargetMarketplace;
+        internal readonly String TargetPackageId;
+        internal readonly Uri TargetWebsiteUrl;
 
         internal MessageEntry(List<Filter> filters, int id,
-                List<MessageDescription> messageDescriptions,
-                int displayPeriodInHours, DateTime displayAfterDate,
-                DateTime displayBeforeDate, int maxDisplayCount,
-                String targetPackageName,
-                Uri targetWebsiteUrl, bool targetMarketplace)
+                              List<MessageDescription> messageDescriptions,
+                              int displayPeriodInHours, DateTime displayAfterDate,
+                              DateTime displayBeforeDate, int maxDisplayCount,
+                              String targetPackageName,
+                              Uri targetWebsiteUrl, bool targetMarketplace)
             : base(filters)
         {
-
             MessageDescriptions = messageDescriptions;
             DisplayPeriodInHours = displayPeriodInHours;
             DisplayAfterDate = displayAfterDate;
@@ -65,23 +64,23 @@ namespace Turkcell.Updater
         {
             const int prime = 31;
             int result = 1;
-            result = prime * result + (TargetMarketplace ? 1231 : 1237);
+            result = prime*result + (TargetMarketplace ? 1231 : 1237);
             result = prime
-                    * result
-                    + ((TargetPackageId == null) ? 0 : TargetPackageId.GetHashCode());
+                     *result
+                     + ((TargetPackageId == null) ? 0 : TargetPackageId.GetHashCode());
             result = prime
-                    * result
-                    + ((TargetWebsiteUrl == null) ? 0 : TargetWebsiteUrl.GetHashCode());
+                     *result
+                     + ((TargetWebsiteUrl == null) ? 0 : TargetWebsiteUrl.GetHashCode());
 
 
             int hc = 0;
             if (MessageDescriptions != null)
-                foreach (var p in MessageDescriptions)
+                foreach (MessageDescription p in MessageDescriptions)
                     hc ^= p.GetHashCode();
-            
+
             result = prime
-                    * result
-                    + ((MessageDescriptions == null) ? 0 : hc);
+                     *result
+                     + ((MessageDescriptions == null) ? 0 : hc);
             return result;
         }
 
@@ -125,10 +124,9 @@ namespace Turkcell.Updater
 
             if (udsObject != null)
             {
-
                 foreach (string key in udsObject.Keys)
                 {
-                    var languageCode = key;
+                    string languageCode = key;
                     JsonData o = udsObject.OptJsonData(languageCode);
                     if (o != null)
                     {
@@ -137,7 +135,7 @@ namespace Turkcell.Updater
                     }
                     else
                     {
-                        var s = udsObject.OptString(languageCode, null);
+                        string s = udsObject.OptString(languageCode, null);
                         if (s != null)
                         {
                             var ud = new MessageDescription(languageCode, s);
@@ -158,8 +156,13 @@ namespace Turkcell.Updater
         }
 
         /// <summary>
-        /// Test friendly version of <see cref="ShouldDisplay(Turkcell.Updater.Properties,Turkcell.Updater.MessageDisplayRecords)"/><br/>
-        /// <em><strong>Note:</strong> </em>
+        ///     Test friendly version of
+        ///     <see
+        ///         cref="ShouldDisplay(Turkcell.Updater.Properties,Turkcell.Updater.MessageDisplayRecords)" />
+        ///     <br />
+        ///     <em>
+        ///         <strong>Note:</strong>
+        ///     </em>
         /// </summary>
         /// <param name="properties"></param>
         /// <param name="records"></param>
@@ -239,9 +242,13 @@ namespace Turkcell.Updater
         }
 
         /// <summary>
-        /// Test friendly version of <see cref="GetMessageToDisplay(Turkcell.Updater.Properties,Turkcell.Updater.MessageDisplayRecords)"/>
-        /// <br/>
-        /// <em><strong>Note:</strong> This method is should only be used for testing purposes.</em>
+        ///     Test friendly version of
+        ///     <see
+        ///         cref="GetMessageToDisplay(Turkcell.Updater.Properties,Turkcell.Updater.MessageDisplayRecords)" />
+        ///     <br />
+        ///     <em>
+        ///         <strong>Note:</strong> This method is should only be used for testing purposes.
+        ///     </em>
         /// </summary>
         /// <param name="properties"></param>
         /// <param name="records"></param>
@@ -258,15 +265,14 @@ namespace Turkcell.Updater
                 {
                     languageCode = s;
                 }
-
             }
 
             MessageDescription description = LocalizedStringMap.Select(MessageDescriptions, languageCode);
             records.OnMessageDisplayed(Id, now);
 
             return new Message(description, TargetWebsiteUrl
-                //, TargetMarketplace
-                , TargetPackageId);
+                               //, TargetMarketplace
+                               , TargetPackageId);
         }
 
         private void Validate()
@@ -274,11 +280,8 @@ namespace Turkcell.Updater
             if (TargetMarketplace && String.IsNullOrEmpty(TargetPackageId))
             {
                 throw new UpdaterException(
-                        "'targetPackageName' shoud be not be empty if target is Marketplace");
+                    "'targetPackageName' shoud be not be empty if target is Marketplace");
             }
         }
-
-
-
     }
 }
